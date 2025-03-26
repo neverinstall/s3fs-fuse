@@ -110,3 +110,16 @@ bin/
 # vim600: noet sw=4 ts=4 fdm=marker
 # vim<600: noet sw=4 ts=4
 #
+
+
+debs/
+.debhelper/
+debian/s3fs-fuse/
+tmp/
+*.after
+*.before
+debian/files
+debian/debhelper-build-stamp
+debian/s3fs-fuse.install
+*.substvars
+.vscode/

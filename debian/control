@@ -1,0 +1,23 @@
+Source: s3fs-fuse
+Section: utils
+Priority: optional
+Maintainer: Lakshmana Pasala <lakshman@neverinstall.com>
+Build-Depends: debhelper-compat (= 12), fuse, mime-support, libc6 (>= 2.17), libcurl3-gnutls (>= 7.16.2), libfuse2 (>= 2.8), libgcc-s1 (>= 3.0), libgcrypt20 (>= 1.8.0), libgnutls30 (>= 3.6.10), libstdc++6 (>= 5.2), libxml2 (>= 2.7.4)
+Standards-Version: 4.5.0
+Homepage: https://github.com/s3fs-fuse/s3fs-fuse
+Vcs-Browser: https://github.com/s3fs-fuse/s3fs-fuse
+Vcs-Git: https://github.com/s3fs-fuse/s3fs-fuse.git
+
+Package: s3fs-fuse
+Architecture: any
+Depends: ${misc:Depends}, fuse
+Recommends: libcurl4-openssl-dev
+Conflicts: s3fs
+Provides: s3fs
+Description: FUSE-based file system backed by Amazon S3
+ s3fs is a FUSE file system that allows you to mount an Amazon S3 bucket
+ as a local file system. It stores files natively and transparently in S3
+ (i.e., you can use other programs to access the same files).
+ .
+ This is a fork of the original s3fs package, modified to work with
+ the FUSE library. 

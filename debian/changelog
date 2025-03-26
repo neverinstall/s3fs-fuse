@@ -1,0 +1,6 @@
+s3fs-fuse (1.95-1ubuntu1) focal; urgency=medium
+
+  * Fork of s3fs-fuse with FUSE support
+  * Initial package for Ubuntu 20.04 (focal)
+
+ -- Lakshmana Pasala <lakshman@neverinstall.com>  Mon, 26 Mar 2025 15:52:45 +0530 

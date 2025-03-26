@@ -1,0 +1,44 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+#export DH_VERBOSE = 1
+
+# see FEATURE AREAS in dpkg-buildflags(1)
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+# see ENVIRONMENT in dpkg-buildflags(1)
+# package maintainers to append CFLAGS
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+# package maintainers to append LDFLAGS
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	PKG_CONFIG_PATH=/usr/local/ssl/lib64/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
+	dh_auto_configure -- --with-openssl --prefix=/usr
+
+override_dh_auto_install:
+	dh_auto_install
+	mkdir -p debian/tmp/usr/bin
+	mkdir -p debian/tmp/usr/share/man/man1
+	cp src/s3fs debian/tmp/usr/bin/
+	cp doc/man/s3fs.1 debian/tmp/usr/share/man/man1/
+
+# Skip the tests as they require additional dependencies
+override_dh_auto_test:
+	@echo "Skipping tests..."
+
+# This is a workaround for the permission issue
+override_dh_fixperms:
+	dh_fixperms
+	chmod 4755 debian/s3fs-fuse/usr/bin/s3fs
+
+# Ignore the missing dependency information for our custom OpenSSL
+override_dh_shlibdeps:
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+
+# Skip automatic dependency generation to make the package more portable
+override_dh_gencontrol:
+	dh_gencontrol -- -Vshlibs:Depends="" 

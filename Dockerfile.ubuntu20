@@ -1,0 +1,47 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    automake \
+    autotools-dev \
+    fuse \
+    libfuse-dev \
+    libcurl4-openssl-dev \
+    libxml2-dev \
+    pkg-config \
+    libssl-dev \
+    git \
+    debhelper \
+    devscripts \
+    dh-make \
+    lintian \
+    wget \
+    zlib1g-dev \
+    curl \
+    locales \
+    apt-utils \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up locale
+RUN locale-gen en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+WORKDIR /build
+
+RUN mkdir -p /build/debs
+
+# Using JSON array format to properly handle signals
+CMD ["bash", "-c", "cd /build/s3fs-fuse && \
+    ./autogen.sh && \
+    debuild -us -uc -b && \
+    mkdir -p /build/debs && \
+    cp ../*.deb /build/debs/ && \
+    echo 'Testing package installation...' && \
+    apt-get update && \
+    apt install -y --no-install-recommends /build/debs/*.deb && \
+    echo 'Package installed successfully!'"] 
